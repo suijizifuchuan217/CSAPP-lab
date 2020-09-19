@@ -1,0 +1,42 @@
+144 in main.c
+150 in main.c
+Cookie: 0x59b997fa
+153	in main.c
+
+340 in support.c stable_launch
+285 in support.c launch
+
+
+
+GOT(Global Offset Table)和PLT(Procedure Linkage Table)
+https://blog.csdn.net/softee/article/details/41256595
+
+
+
+
+
+main call stable_launch call launch call test call getbuf
+
+touch1 : end with "exit 0"
+
+
+rsp:
+test begin : 0x5561dcb0
+test frame : 0x5561dca8
+getbuf begin : 0x5561dca0
+getbuf after sub rsp : 0x5561dc78
+
+
+x /10xb 0x5561dc78
+
+
+print 输出一次
+display 每执行一次输出
+
+0x7ffff7e5b027
+0x7ffff7e4ae15
+
+执行了ret pc 会自己 + 8 .......   啊啊啊啊啊啊 ， 会执行pop的  果然是这样！！！！！！
+
+解：  如果使用 -rsp的方式， 和push 方式唯一的不同之处在于 push会覆盖掉原来getbuf的ret的地址的位置，这样push再pop后，rsp的地址是不变的。 但是如果手动-rsp ， rsp的地址就变化了， 就会把test的栈帧污染了 ，导致错误。
+
